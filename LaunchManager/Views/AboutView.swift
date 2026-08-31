@@ -13,7 +13,7 @@ struct AboutView: View {
             } else {
                 Image(systemName: "gearshape.2.fill")
                     .font(.system(size: 64))
-                    .foregroundStyle(.blue)
+                    .foregroundStyle(Color.accentColor)
             }
 
             VStack(spacing: 4) {

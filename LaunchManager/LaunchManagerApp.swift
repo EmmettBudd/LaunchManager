@@ -3,6 +3,7 @@ import SwiftUI
 
 extension Notification.Name {
     static let showAbout = Notification.Name("showAbout")
+    static let refreshCurrentModule = Notification.Name("refreshCurrentModule")
 }
 
 @main
@@ -14,8 +15,17 @@ struct LaunchManagerApp: App {
         }
         .windowStyle(.titleBar)
         .windowToolbarStyle(.unified)
+        .windowResizability(.contentSize)
         .commands {
             CommandGroup(replacing: .newItem) { }
+            CommandGroup(after: .toolbar) {
+                Button {
+                    NotificationCenter.default.post(name: .refreshCurrentModule, object: nil)
+                } label: {
+                    Label("刷新", systemImage: "arrow.clockwise")
+                }
+                .keyboardShortcut("r", modifiers: .command)
+            }
             CommandGroup(replacing: .appInfo) {
                 Button("关于 LaunchManager") {
                     NotificationCenter.default.post(name: .showAbout, object: nil)

@@ -49,12 +49,29 @@ struct AgentListView: View {
     private var filteredItems: [LaunchItem] {
         var items = store.items
         items = applyScopeFilter(to: items)
-        guard !searchText.isEmpty else { return items }
-        return items.filter {
-            $0.label.localizedCaseInsensitiveContains(searchText) ||
-            $0.program.localizedCaseInsensitiveContains(searchText) ||
-            ($0.brewFormulaName?.localizedCaseInsensitiveContains(searchText) ?? false)
+        if !searchText.isEmpty {
+            items = items.filter {
+                $0.label.localizedCaseInsensitiveContains(searchText) ||
+                $0.program.localizedCaseInsensitiveContains(searchText) ||
+                ($0.brewFormulaName?.localizedCaseInsensitiveContains(searchText) ?? false)
+            }
         }
+        return items.sorted { lhs, rhs in
+            let lhsRank = statusRank(lhs)
+            let rhsRank = statusRank(rhs)
+            if lhsRank != rhsRank { return lhsRank < rhsRank }
+            return lhs.label.localizedCaseInsensitiveCompare(rhs.label) == .orderedAscending
+        }
+    }
+
+    /// Lower ranks sort first — running items surface at the top, then things
+    /// that likely need attention, then healthy-but-idle items, then unloaded.
+    private func statusRank(_ item: LaunchItem) -> Int {
+        if item.pid != nil { return 0 }
+        if item.isDisabledByOverride { return 1 }
+        if let code = item.lastExitCode, code != 0 { return 2 }
+        if item.isLoaded { return 3 }
+        return 4
     }
 
     private var filteredInvalidItems: [InvalidPlist] {
@@ -131,12 +148,6 @@ struct AgentListView: View {
                     Label("导入", systemImage: "square.and.arrow.down")
                 }
             }
-            ToolbarItem {
-                Button { refreshAll() } label: {
-                    Label("刷新", systemImage: "arrow.clockwise")
-                }
-                .disabled(homebrewStore.isRefreshing)
-            }
         }
         .sheet(item: $importRequest) { request in
             ImportPlistSheet(
@@ -171,15 +182,10 @@ struct AgentListView: View {
     }
 
     private var filterBar: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 6) {
-                filterChip(.all)
-                filterChip(.homebrew, icon: "mug.fill")
-                ForEach(LaunchItem.Scope.allCases, id: \.self) { scope in
-                    filterChip(.scope(scope), icon: scope.systemImage)
-                }
-            }
-        }
+        FilterChipBar(
+            options: [.all, .homebrew] + LaunchItem.Scope.allCases.map(AgentListFilter.scope),
+            selection: $listFilter
+        )
     }
 
     private var homebrewListContent: some View {
@@ -206,40 +212,6 @@ struct AgentListView: View {
             }
             .padding()
         }
-    }
-
-    private func filterChip(_ filter: AgentListFilter, icon: String? = nil) -> some View {
-        Button {
-            listFilter = filter
-        } label: {
-            HStack(spacing: 4) {
-                if let icon {
-                    Image(systemName: icon)
-                        .font(.caption2)
-                }
-                Text(filter.chipTitle)
-            }
-            .font(.caption)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 5)
-            .background(
-                Capsule()
-                    .fill(listFilter == filter ? chipFillColor(for: filter) : Color(nsColor: .controlBackgroundColor))
-            )
-            .overlay(
-                Capsule()
-                    .stroke(listFilter == filter ? chipStrokeColor(for: filter) : Color(nsColor: .separatorColor), lineWidth: 1)
-            )
-        }
-        .buttonStyle(.plain)
-    }
-
-    private func chipFillColor(for filter: AgentListFilter) -> Color {
-        filter == .homebrew ? Color(red: 0.24, green: 0.21, blue: 0.13) : Color.accentColor.opacity(0.25)
-    }
-
-    private func chipStrokeColor(for filter: AgentListFilter) -> Color {
-        filter == .homebrew ? Color(red: 0.36, green: 0.29, blue: 0.07) : Color.accentColor
     }
 
     private var unregisteredSection: some View {
@@ -279,11 +251,6 @@ struct AgentListView: View {
             store: store,
             errorMessage: $errorMessage
         )
-    }
-
-    private func refreshAll() {
-        store.refresh()
-        homebrewStore.refresh()
     }
 
     private func applyScopeFilter(to items: [LaunchItem]) -> [LaunchItem] {

@@ -296,16 +296,6 @@
       }
     },
     "Launchd": {},
-    "Launchd（本应用管理）": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Launchd (managed in this app)"
-          }
-        }
-      }
-    },
     "LaunchDaemons": {
       "localizations": {
         "en": {
@@ -344,26 +334,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Login Items"
-          }
-        }
-      }
-    },
-    "Login Items 与 Launchd 的区别": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Login Items vs. Launchd"
-          }
-        }
-      }
-    },
-    "Login Items（系统设置管理）": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Login Items (System Settings)"
           }
         }
       }
@@ -569,16 +539,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Paste from XML…"
-          }
-        }
-      }
-    },
-    "位于「系统设置 → 通用 → 登录项」，包括「打开时登录」的应用与「允许在后台」的项目。由 macOS 统一管理，本应用不提供列表或开关。": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Found in System Settings → General → Login Items (open at login and background items). Managed by macOS only; this app does not list or toggle them."
           }
         }
       }
@@ -1225,16 +1185,6 @@
         }
       }
     },
-    "对应侧边栏中的 LaunchAgent / LaunchDaemon，plist 位于 ~/Library/LaunchAgents、/Library/LaunchAgents、/Library/LaunchDaemons。可在本应用中载入、移除、启动与停止。": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "LaunchAgents and LaunchDaemons in the sidebar use plists under ~/Library/LaunchAgents, /Library/LaunchAgents, and /Library/LaunchDaemons. Load, unload, start, and stop them here."
-          }
-        }
-      }
-    },
     "导入": {
       "localizations": {
         "en": {
@@ -1295,12 +1245,12 @@
         }
       }
     },
-    "尝试启动 dev server，或开启「显示全部」": {
+    "尝试启动 dev server，或切换到「全部」": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Start a dev server, or enable \"Show All\""
+            "value": "Start a dev server, or switch to \"All\""
           }
         }
       }
@@ -1423,6 +1373,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Disabled by system (launchctl override)"
+          }
+        }
+      }
+    },
+    "开发服务": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dev"
           }
         }
       }
@@ -1975,16 +1935,6 @@
         }
       }
     },
-    "显示全部": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Show All"
-          }
-        }
-      }
-    },
     "显示名称": {
       "localizations": {
         "en": {
@@ -2123,16 +2073,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Local Instances"
-          }
-        }
-      }
-    },
-    "本地开发环境": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Local Dev Environment"
           }
         }
       }
@@ -2608,6 +2548,16 @@
         }
       }
     },
+    "状态未知 (PID %d)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Status unknown (PID %d)"
+          }
+        }
+      }
+    },
     "环境变量 EnvironmentVariables（可选）": {
       "localizations": {
         "en": {
@@ -2635,26 +2585,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "User · Global · System"
-          }
-        }
-      }
-    },
-    "用户 · 全局 · 系统 · Homebrew": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "User · Global · System · Homebrew"
-          }
-        }
-      }
-    },
-    "用户 · 系统": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "User · System"
           }
         }
       }
@@ -2746,6 +2676,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Run once at login or load"
+          }
+        }
+      }
+    },
+    "登录项仅可在 macOS 系统设置中管理。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Login Items can only be managed from within macOS Settings."
           }
         }
       }
@@ -2970,16 +2910,6 @@
         }
       }
     },
-    "系统「登录项」请在本页了解后，前往系统设置管理。": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Learn how Login Items differ from launchd here, then manage them in System Settings."
-          }
-        }
-      }
-    },
     "系统日志": {
       "localizations": {
         "en": {
@@ -3191,37 +3121,6 @@
         }
       }
     },
-    "许多 Login Item 背后对应同一个 launchd plist，若已在 Launch Agents / LaunchDaemons 中出现，请在本应用相应分类中管理。": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Many Login Items share the same launchd plist. If it already appears under Launch Agents or LaunchDaemons, manage it there."
-          }
-        }
-      }
-    },
-    "许多 Login Item 背后对应同一个 launchd plist，若已在 LaunchAgents / LaunchDaemons 中出现，请在本应用相应分类中管理。": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Many Login Items share the same launchd plist. If it already appears under LaunchAgents or LaunchDaemons, manage it there."
-          }
-        }
-      }
-    },
-    "说明 · 系统设置": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Guide · System Settings"
-          }
-        }
-      }
-    },
     "说明页 · 跳转系统设置": {
       "localizations": {
         "en": {
@@ -3323,6 +3222,16 @@
         }
       }
     },
+    "运行中 (PID %d)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Running (PID %d)"
+          }
+        }
+      }
+    },
     "运行中 (PID %lld)": {
       "localizations": {
         "en": {
@@ -3339,6 +3248,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Run as user"
+          }
+        }
+      }
+    },
+    "进程未响应 (PID %d)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Process not responding (PID %d)"
           }
         }
       }

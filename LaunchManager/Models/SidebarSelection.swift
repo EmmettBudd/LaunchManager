@@ -17,7 +17,7 @@ enum SidebarSelection: Hashable {
     }
 }
 
-enum AgentListFilter: Hashable {
+enum AgentListFilter: FilterChipOption {
     case all
     case homebrew
     case scope(LaunchItem.Scope)
@@ -32,6 +32,14 @@ enum AgentListFilter: Hashable {
             case .systemAgent: return "全局"
             case .systemDaemon: return "Daemon"
             }
+        }
+    }
+
+    var chipIcon: String? {
+        switch self {
+        case .all: return nil
+        case .homebrew: return "mug.fill"
+        case .scope(let scope): return scope.systemImage
         }
     }
 }

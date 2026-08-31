@@ -58,6 +58,7 @@ struct ContentView: View {
                 showModuleSettings: $showModuleSettings,
                 onHelpTapped: { showHelpConfirm = true }
             )
+            .navigationSplitViewColumnWidth(min: 180, ideal: 225, max: 360)
         } detail: {
             detailView
         }
@@ -97,6 +98,11 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .brewServicesDidChange)) { _ in
             if isAgentsView, moduleSettings.isEnabled(.agents) {
                 store.refresh()
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .refreshCurrentModule)) { _ in
+            if let selection {
+                refreshModuleIfNeeded(selection)
             }
         }
         .sheet(isPresented: $showModuleSettings) {
@@ -282,6 +288,7 @@ struct ContentView: View {
         case .loginItems:
             break
         case .agents:
+            store.refresh()
             homebrewStore.refresh()
         }
     }
