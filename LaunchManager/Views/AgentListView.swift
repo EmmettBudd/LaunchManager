@@ -131,12 +131,6 @@ struct AgentListView: View {
                     Label("导入", systemImage: "square.and.arrow.down")
                 }
             }
-            ToolbarItem {
-                Button { refreshAll() } label: {
-                    Label("刷新", systemImage: "arrow.clockwise")
-                }
-                .disabled(homebrewStore.isRefreshing)
-            }
         }
         .sheet(item: $importRequest) { request in
             ImportPlistSheet(
@@ -240,11 +234,6 @@ struct AgentListView: View {
             store: store,
             errorMessage: $errorMessage
         )
-    }
-
-    private func refreshAll() {
-        store.refresh()
-        homebrewStore.refresh()
     }
 
     private func applyScopeFilter(to items: [LaunchItem]) -> [LaunchItem] {

@@ -88,11 +88,6 @@ struct ServicesListView: View {
                         .help(store.lastScanError ?? "")
                 }
             }
-            ToolbarItem {
-                Button { store.refreshNow() } label: {
-                    Label("刷新", systemImage: "arrow.clockwise")
-                }
-            }
         }
     }
 

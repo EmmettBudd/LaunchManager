@@ -67,12 +67,6 @@ struct CronListView: View {
                     Label("新建", systemImage: "plus")
                 }
             }
-            ToolbarItem {
-                Button { store.refresh() } label: {
-                    Label("刷新", systemImage: "arrow.clockwise")
-                }
-                .disabled(store.isRefreshing)
-            }
         }
     }
 

@@ -100,6 +100,11 @@ struct ContentView: View {
                 store.refresh()
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .refreshCurrentModule)) { _ in
+            if let selection {
+                refreshModuleIfNeeded(selection)
+            }
+        }
         .sheet(isPresented: $showModuleSettings) {
             ModuleSettingsSheet(moduleSettings: moduleSettings)
         }
@@ -283,6 +288,7 @@ struct ContentView: View {
         case .loginItems:
             break
         case .agents:
+            store.refresh()
             homebrewStore.refresh()
         }
     }
