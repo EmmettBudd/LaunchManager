@@ -83,7 +83,7 @@ private struct FeatureCard: View {
         HStack(alignment: .top, spacing: 10) {
             Image(systemName: icon)
                 .font(.system(size: 18))
-                .foregroundStyle(.blue)
+                .foregroundStyle(Color.accentColor)
                 .frame(width: 24)
             VStack(alignment: .leading, spacing: 3) {
                 Text(title)
