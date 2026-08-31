@@ -4,8 +4,8 @@ import SwiftUI
 enum AppModule: String, CaseIterable, Identifiable, Codable, Hashable {
     case agents
     case crontab
-    case loginItems
     case services
+    case loginItems
 
     var id: String { rawValue }
 
@@ -13,8 +13,8 @@ enum AppModule: String, CaseIterable, Identifiable, Codable, Hashable {
         switch self {
         case .agents: return .agents
         case .crontab: return .crontab
-        case .loginItems: return .loginItems
         case .services: return .services
+        case .loginItems: return .loginItems
         }
     }
 
@@ -22,8 +22,8 @@ enum AppModule: String, CaseIterable, Identifiable, Codable, Hashable {
         switch self {
         case .agents: return "Launch Agents"
         case .crontab: return "Crontab"
-        case .loginItems: return "Login Items"
         case .services: return "Services"
+        case .loginItems: return "Login Items"
         }
     }
 
@@ -31,8 +31,8 @@ enum AppModule: String, CaseIterable, Identifiable, Codable, Hashable {
         switch self {
         case .agents: return "list.bullet.rectangle"
         case .crontab: return "clock"
-        case .loginItems: return "key.fill"
         case .services: return "bolt.fill"
+        case .loginItems: return "key.fill"
         }
     }
 
@@ -40,8 +40,8 @@ enum AppModule: String, CaseIterable, Identifiable, Codable, Hashable {
         switch self {
         case .agents: return "扫描 LaunchAgent / LaunchDaemon 与 Homebrew 服务"
         case .crontab: return "扫描用户与系统 Crontab"
-        case .loginItems: return "说明页 · 跳转系统设置"
         case .services: return "扫描本地监听端口与开发服务"
+        case .loginItems: return "说明页 · 跳转系统设置"
         }
     }
 }
