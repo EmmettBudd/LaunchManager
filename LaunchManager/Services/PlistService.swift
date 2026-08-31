@@ -283,7 +283,8 @@ struct PlistService {
                 privilege: PrivilegeService) throws {
         if item.scope.requiresPrivilege {
             let domain = item.scope == .systemDaemon ? "system" : "gui/\(getuid())"
-            try privilege.run("/bin/launchctl bootout \(domain) \(item.plistURL.path); rm \(item.plistURL.path)")
+            let path = shellQuote(item.plistURL.path)
+            try privilege.run("/bin/launchctl bootout \(domain) \(path); rm \(path)")
         } else {
             try? launchctl.bootout(item.plistURL, scope: item.scope)
             try FileManager.default.removeItem(at: item.plistURL)
