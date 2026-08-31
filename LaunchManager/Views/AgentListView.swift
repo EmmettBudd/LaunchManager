@@ -224,22 +224,14 @@ struct AgentListView: View {
             .padding(.vertical, 5)
             .background(
                 Capsule()
-                    .fill(listFilter == filter ? chipFillColor(for: filter) : Color(nsColor: .controlBackgroundColor))
+                    .fill(listFilter == filter ? Color.accentColor.opacity(0.25) : Color(nsColor: .controlBackgroundColor))
             )
             .overlay(
                 Capsule()
-                    .stroke(listFilter == filter ? chipStrokeColor(for: filter) : Color(nsColor: .separatorColor), lineWidth: 1)
+                    .stroke(listFilter == filter ? Color.accentColor : Color(nsColor: .separatorColor), lineWidth: 1)
             )
         }
         .buttonStyle(.plain)
-    }
-
-    private func chipFillColor(for filter: AgentListFilter) -> Color {
-        filter == .homebrew ? Color(red: 0.24, green: 0.21, blue: 0.13) : Color.accentColor.opacity(0.25)
-    }
-
-    private func chipStrokeColor(for filter: AgentListFilter) -> Color {
-        filter == .homebrew ? Color(red: 0.36, green: 0.29, blue: 0.07) : Color.accentColor
     }
 
     private var unregisteredSection: some View {
