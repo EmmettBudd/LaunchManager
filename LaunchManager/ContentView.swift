@@ -58,6 +58,7 @@ struct ContentView: View {
                 showModuleSettings: $showModuleSettings,
                 onHelpTapped: { showHelpConfirm = true }
             )
+            .navigationSplitViewColumnWidth(min: 180, ideal: 225, max: 360)
         } detail: {
             detailView
         }

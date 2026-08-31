@@ -27,15 +27,6 @@ enum AppModule: String, CaseIterable, Identifiable, Codable, Hashable {
         }
     }
 
-    var subtitle: LocalizedStringKey {
-        switch self {
-        case .agents: return "用户 · 全局 · 系统 · Homebrew"
-        case .crontab: return "用户 · 系统"
-        case .loginItems: return "说明 · 系统设置"
-        case .services: return "本地开发环境"
-        }
-    }
-
     var systemImage: String {
         switch self {
         case .agents: return "list.bullet.rectangle"

@@ -2116,16 +2116,6 @@
         }
       }
     },
-    "本地开发环境": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Local Dev Environment"
-          }
-        }
-      }
-    },
     "权限": {
       "localizations": {
         "en": {
@@ -2624,26 +2614,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "User · Global · System"
-          }
-        }
-      }
-    },
-    "用户 · 全局 · 系统 · Homebrew": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "User · Global · System · Homebrew"
-          }
-        }
-      }
-    },
-    "用户 · 系统": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "User · System"
           }
         }
       }
@@ -3197,16 +3167,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Many Login Items share the same launchd plist. If it already appears under LaunchAgents or LaunchDaemons, manage it there."
-          }
-        }
-      }
-    },
-    "说明 · 系统设置": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Guide · System Settings"
           }
         }
       }

@@ -26,41 +26,41 @@ struct SidebarView: View {
                             selection: $selection,
                             tag: module.sidebarSelection,
                             title: Text(module.title),
-                            subtitle: Text(module.subtitle),
                             icon: module.systemImage,
                             badge: badge(for: module)
                         )
                     }
-
-                    Spacer(minLength: 20)
-
-                    Button {
-                        onHelpTapped()
-                    } label: {
-                        HStack(spacing: 10) {
-                            Image(systemName: "book.fill")
-                                .frame(width: 20)
-                            VStack(alignment: .leading, spacing: 1) {
-                                Text("用户手册")
-                                Text("launchmanager.dev/help")
-                                    .font(.caption2)
-                                    .foregroundStyle(.secondary)
-                            }
-                            Spacer()
-                            Image(systemName: "arrow.up.right")
-                                .font(.caption2)
-                                .foregroundStyle(.secondary)
-                        }
-                        .padding(.vertical, 4)
-                        .padding(.horizontal, 8)
-                        .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
                 }
                 .padding(.horizontal, 8)
                 .padding(.top, 8)
             }
             .navigationTitle("LaunchManager")
+
+            Divider()
+
+            Button {
+                onHelpTapped()
+            } label: {
+                HStack(spacing: 10) {
+                    Image(systemName: "book.fill")
+                        .frame(width: 20)
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text("用户手册")
+                        Text("launchmanager.dev/help")
+                            .font(.caption2)
+                    }
+                    Spacer()
+                    Image(systemName: "arrow.up.right")
+                        .font(.caption2)
+                }
+                .foregroundStyle(.secondary)
+                .padding(.vertical, 4)
+                .padding(.horizontal, 8)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
 
             Divider()
 
@@ -99,7 +99,6 @@ private struct SidebarRow: View {
     @Binding var selection: SidebarSelection?
     let tag: SidebarSelection
     let title: Text
-    let subtitle: Text
     let icon: String
     let badge: Int
 
@@ -113,13 +112,8 @@ private struct SidebarRow: View {
                 Image(systemName: icon)
                     .frame(width: 20)
                     .foregroundStyle(isSelected ? Color.accentColor : Color.primary)
-                VStack(alignment: .leading, spacing: 1) {
-                    title
-                        .foregroundStyle(isSelected ? Color.accentColor : Color.primary)
-                    subtitle
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                }
+                title
+                    .foregroundStyle(isSelected ? Color.accentColor : Color.primary)
                 Spacer(minLength: 4)
                 if badge > 0 {
                     Text(verbatim: "\(badge)")
