@@ -2537,6 +2537,16 @@
         }
       }
     },
+    "状态未知 (PID %d)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Status unknown (PID %d)"
+          }
+        }
+      }
+    },
     "环境变量 EnvironmentVariables（可选）": {
       "localizations": {
         "en": {
@@ -3201,6 +3211,16 @@
         }
       }
     },
+    "运行中 (PID %d)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Running (PID %d)"
+          }
+        }
+      }
+    },
     "运行中 (PID %lld)": {
       "localizations": {
         "en": {
@@ -3217,6 +3237,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Run as user"
+          }
+        }
+      }
+    },
+    "进程未响应 (PID %d)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Process not responding (PID %d)"
           }
         }
       }

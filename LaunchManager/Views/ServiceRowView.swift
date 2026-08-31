@@ -19,13 +19,21 @@ struct ServiceRowView: View {
         service.health == .healthy ? .green : .red
     }
 
+    private var statusTooltip: String {
+        switch service.health {
+        case .healthy: return String(localized: "运行中 (PID \(service.pid))")
+        case .down:    return String(localized: "进程未响应 (PID \(service.pid))")
+        case .unknown: return String(localized: "状态未知 (PID \(service.pid))")
+        }
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 8) {
                 Circle()
                     .fill(statusColor)
                     .frame(width: 8, height: 8)
-                    .help("PID \(service.pid)")
+                    .help(statusTooltip)
 
                 if service.isHomebrewManaged {
                     HomebrewTag()
