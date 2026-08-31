@@ -19,10 +19,10 @@ struct SidebarView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            List {
-                Section {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 2) {
                     ForEach(enabledModules) { module in
-                        SidebarRowButton(
+                        SidebarRow(
                             selection: $selection,
                             tag: module.sidebarSelection,
                             title: Text(module.title),
@@ -31,9 +31,9 @@ struct SidebarView: View {
                             badge: badge(for: module)
                         )
                     }
-                }
 
-                Section {
+                    Spacer(minLength: 20)
+
                     Button {
                         onHelpTapped()
                     } label: {
@@ -51,12 +51,15 @@ struct SidebarView: View {
                                 .font(.caption2)
                                 .foregroundStyle(.secondary)
                         }
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 8)
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                 }
+                .padding(.horizontal, 8)
+                .padding(.top, 8)
             }
-            .listStyle(.sidebar)
             .navigationTitle("LaunchManager")
 
             Divider()
@@ -92,7 +95,7 @@ struct SidebarView: View {
     }
 }
 
-private struct SidebarRowButton: View {
+private struct SidebarRow: View {
     @Binding var selection: SidebarSelection?
     let tag: SidebarSelection
     let title: Text
@@ -109,8 +112,10 @@ private struct SidebarRowButton: View {
             HStack(spacing: 10) {
                 Image(systemName: icon)
                     .frame(width: 20)
+                    .foregroundStyle(isSelected ? Color.accentColor : Color.primary)
                 VStack(alignment: .leading, spacing: 1) {
                     title
+                        .foregroundStyle(isSelected ? Color.accentColor : Color.primary)
                     subtitle
                         .font(.caption2)
                         .foregroundStyle(.secondary)
@@ -120,11 +125,22 @@ private struct SidebarRowButton: View {
                     Text(verbatim: "\(badge)")
                         .font(.caption2)
                         .monospacedDigit()
+                        .foregroundStyle(isSelected ? Color.accentColor : Color.secondary)
                 }
             }
+            .padding(.vertical, 4)
+            .padding(.horizontal, 8)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
+            .background(
+                // Painted entirely by us (not List's native tag-based selection), so
+                // there's no AppKit press-highlight flash and the shape stays a
+                // consistent rounded, inset capsule that matches Finder rather than
+                // a hard-edged full-width bar.
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                    .fill(isSelected ? Color(nsColor: .unemphasizedSelectedContentBackgroundColor) : Color.clear)
+            )
         }
         .buttonStyle(.plain)
-        .listRowBackground(isSelected ? Color.accentColor : nil)
     }
 }
