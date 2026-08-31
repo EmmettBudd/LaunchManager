@@ -1,5 +1,24 @@
 import SwiftUI
 
+enum ServiceListFilter: FilterChipOption {
+    case all
+    case dev
+
+    var chipTitle: LocalizedStringKey {
+        switch self {
+        case .all: return "全部"
+        case .dev: return "开发服务"
+        }
+    }
+
+    var chipIcon: String? {
+        switch self {
+        case .all: return nil
+        case .dev: return "hammer.fill"
+        }
+    }
+}
+
 struct ServicesListView: View {
     @ObservedObject var store: ServiceStore
     @Binding var errorMessage: String?
@@ -26,24 +45,39 @@ struct ServicesListView: View {
         }
     }
 
+    private var filterSelection: Binding<ServiceListFilter> {
+        Binding(
+            get: { store.showAll ? .all : .dev },
+            set: { store.showAll = ($0 == .all) }
+        )
+    }
+
     var body: some View {
-        Group {
-            if filteredServices.isEmpty {
-                ContentUnavailableView(
-                    emptyStateTitle,
-                    systemImage: store.lastScanError == nil ? "bolt.slash" : "exclamationmark.triangle",
-                    description: Text(emptyStateDescription)
-                )
-            } else {
-                ScrollView {
-                    LazyVStack(alignment: .leading, spacing: 12) {
-                        ForEach(groupedServices, id: \.0) { group, services in
-                            serviceGroupSection(group: group, services: services)
+        VStack(spacing: 0) {
+            FilterChipBar(options: [.all, .dev], selection: filterSelection)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 10)
+            Divider()
+
+            Group {
+                if filteredServices.isEmpty {
+                    ContentUnavailableView(
+                        emptyStateTitle,
+                        systemImage: store.lastScanError == nil ? "bolt.slash" : "exclamationmark.triangle",
+                        description: Text(emptyStateDescription)
+                    )
+                } else {
+                    ScrollView {
+                        LazyVStack(alignment: .leading, spacing: 12) {
+                            ForEach(groupedServices, id: \.0) { group, services in
+                                serviceGroupSection(group: group, services: services)
+                            }
                         }
+                        .padding()
                     }
-                    .padding()
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .searchable(text: $searchText, prompt: "搜索服务名、端口、项目…")
         .toolbar {
@@ -53,9 +87,6 @@ struct ServicesListView: View {
                         .foregroundStyle(.yellow)
                         .help(store.lastScanError ?? "")
                 }
-            }
-            ToolbarItem {
-                Toggle("显示全部", isOn: $store.showAll)
             }
             ToolbarItem {
                 Button { store.refreshNow() } label: {
@@ -74,7 +105,7 @@ struct ServicesListView: View {
     private var emptyStateDescription: String {
         if let error = store.lastScanError { return error }
         if !store.showAll {
-            return String(localized: "尝试启动 dev server，或开启「显示全部」")
+            return String(localized: "尝试启动 dev server，或切换到「全部」")
         }
         return String(localized: "当前没有监听中的 TCP 服务")
     }

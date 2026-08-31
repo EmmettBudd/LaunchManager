@@ -171,15 +171,10 @@ struct AgentListView: View {
     }
 
     private var filterBar: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 6) {
-                filterChip(.all)
-                filterChip(.homebrew, icon: "mug.fill")
-                ForEach(LaunchItem.Scope.allCases, id: \.self) { scope in
-                    filterChip(.scope(scope), icon: scope.systemImage)
-                }
-            }
-        }
+        FilterChipBar(
+            options: [.all, .homebrew] + LaunchItem.Scope.allCases.map(AgentListFilter.scope),
+            selection: $listFilter
+        )
     }
 
     private var homebrewListContent: some View {
@@ -206,32 +201,6 @@ struct AgentListView: View {
             }
             .padding()
         }
-    }
-
-    private func filterChip(_ filter: AgentListFilter, icon: String? = nil) -> some View {
-        Button {
-            listFilter = filter
-        } label: {
-            HStack(spacing: 4) {
-                if let icon {
-                    Image(systemName: icon)
-                        .font(.caption2)
-                }
-                Text(filter.chipTitle)
-            }
-            .font(.caption)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 5)
-            .background(
-                Capsule()
-                    .fill(listFilter == filter ? Color.accentColor.opacity(0.25) : Color(nsColor: .controlBackgroundColor))
-            )
-            .overlay(
-                Capsule()
-                    .stroke(listFilter == filter ? Color.accentColor : Color(nsColor: .separatorColor), lineWidth: 1)
-            )
-        }
-        .buttonStyle(.plain)
     }
 
     private var unregisteredSection: some View {

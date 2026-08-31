@@ -1234,12 +1234,12 @@
         }
       }
     },
-    "尝试启动 dev server，或开启「显示全部」": {
+    "尝试启动 dev server，或切换到「全部」": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Start a dev server, or enable \"Show All\""
+            "value": "Start a dev server, or switch to \"All\""
           }
         }
       }
@@ -1362,6 +1362,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Disabled by system (launchctl override)"
+          }
+        }
+      }
+    },
+    "开发服务": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dev"
           }
         }
       }
@@ -1910,16 +1920,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Display & Scan"
-          }
-        }
-      }
-    },
-    "显示全部": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Show All"
           }
         }
       }
