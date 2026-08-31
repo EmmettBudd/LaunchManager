@@ -30,6 +30,11 @@ struct AboutView: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
 
+            Text("这是一个个人 fork，用于试验一些适合自己需求的改动。原项目版权归原作者所有。")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+
             Divider()
 
             VStack(spacing: 8) {
@@ -46,9 +51,14 @@ struct AboutView: View {
                 .controlSize(.small)
                 .disabled(updateChecker.isChecking)
 
-                Link(destination: URL(string: "https://github.com/Sean10000/LaunchManager")!) {
-                    Label("GitHub: Sean10000/LaunchManager", systemImage: "link")
+                Link(destination: URL(string: "https://github.com/EmmettBudd/LaunchManager")!) {
+                    Label("GitHub: EmmettBudd/LaunchManager (fork)", systemImage: "link")
                         .font(.subheadline)
+                }
+
+                Link(destination: URL(string: "https://github.com/Sean10000/LaunchManager")!) {
+                    Label("原项目 / Original: Sean10000/LaunchManager", systemImage: "arrow.triangle.branch")
+                        .font(.caption)
                 }
 
                 Text("MIT License · 开源免费")

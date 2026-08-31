@@ -6,15 +6,7 @@ A macOS app for managing launchd LaunchAgents and LaunchDaemons — view, create
 
 ![Version](https://img.shields.io/badge/version-1.6.4-blue) ![macOS](https://img.shields.io/badge/macOS-14%2B-blue) ![Swift](https://img.shields.io/badge/Swift-5.10-orange) ![License](https://img.shields.io/badge/license-MIT-green) ![Built with Claude](https://img.shields.io/badge/Built%20with-Claude-blueviolet?logo=anthropic)
 
-## Star History
-
-<a href="https://www.star-history.com/?repos=Sean10000%2FLaunchManager&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=Sean10000/LaunchManager&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=Sean10000/LaunchManager&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=Sean10000/LaunchManager&type=date&legend=top-left" />
- </picture>
-</a>
+> **This is a fork.** This repository is a personal fork of [Sean10000/LaunchManager](https://github.com/Sean10000/LaunchManager), maintained here to experiment with a few changes to fit my own use case. All credit for the original design and implementation goes to [Sean10000](https://github.com/Sean10000) — go there for the canonical project, releases, and support.
 
 ## Features
 
@@ -164,12 +156,8 @@ LaunchManager/
 
 MIT — see [LICENSE](LICENSE).
 
-## Support
-
-If LaunchManager saved you some time, feel free to buy me a coffee ☕ Americano is better.
-
-<img src="assets/wechat-reward.jpg" width="200" alt="WeChat Reward QR Code" />
-
 ## Acknowledgements
+
+This is a fork of [LaunchManager](https://github.com/Sean10000/LaunchManager) by [Sean10000](https://github.com/Sean10000) — all credit for the original project goes to them. This fork exists to experiment with a few changes for my own use case.
 
 Built with [Claude](https://claude.ai) (Anthropic) — AI pair programmer for design, implementation, and code review.
