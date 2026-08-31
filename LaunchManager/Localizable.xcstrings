@@ -227,7 +227,8 @@
       }
     },
     "Formula": {},
-    "GitHub: Sean10000/LaunchManager": {},
+    "GitHub: EmmettBudd/LaunchManager (fork)": {},
+    "原项目 / Original: Sean10000/LaunchManager": {},
     "Homebrew": {},
     "Homebrew Services": {
       "extractionState": "stale",
@@ -383,6 +384,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "macOS launch item manager for scheduled tasks and startup entries"
+          }
+        }
+      }
+    },
+    "这是一个个人 fork，用于试验一些适合自己需求的改动。原项目版权归原作者所有。": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This is a personal fork, maintained to experiment with a few changes to fit my own use case. All credit for the original project goes to its author."
           }
         }
       }
