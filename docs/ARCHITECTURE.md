@@ -39,21 +39,8 @@ System-scope operations (`/Library/LaunchDaemons`, `/Library/LaunchAgents`) go t
 NSAppleScript(source: "do shell script \"...\" with administrator privileges")
 ```
 
-This is the standard, expected macOS mechanism for this class of tool — no private APIs or exotic escalation tricks. Every call site builds its shell command as a plain string, so **path/argument quoting is the whole security model here**: every privileged call site is expected to run its interpolated values through the local `shellQuote()` helper (`'` + escape embedded `'` + `'`) before splicing them into the command. `LaunchctlService`, `BrewServicesService`, and most of `PlistService` do this consistently. `PlistService.delete()` was the one exception — see Findings below (fixed in a separate PR on this branch's base).
+This is the standard, expected macOS mechanism for this class of tool — no private APIs or exotic escalation tricks. Every call site builds its shell command as a plain string, so **path/argument quoting is the whole security model here**: every privileged call site is expected to run its interpolated values through the local `shellQuote()` helper (`'` + escape embedded `'` + `'`) before splicing them into the command. `LaunchctlService`, `BrewServicesService`, and `PlistService` all do this consistently.
 
 ## Testing
 
 92 XCTest functions concentrated on the parts most worth unit-testing: plist parsing/roundtrip (calendar/interval/watch-path triggers, environment variables, working directory, extra-key detection for the Form/XML mode split), `launchctl list` output parsing, disabled-label parsing, and crontab parsing. This is the right place to spend test budget in an app like this — the SwiftUI views are thin and mostly untested, which is a reasonable tradeoff, not a gap.
-
-## Findings from this review
-
-1. **Fixed (see PR on `fix/plist-delete-shell-quote`):** `PlistService.delete()` interpolated `item.plistURL.path` into a privileged shell command without `shellQuote()`, unlike every other privileged call site in the same file. Impact: breaks deletion for paths with spaces/metacharacters, and is a latent shell-injection surface if a crafted `Label` ends up in a privileged plist's filename (arbitrary shell execution as root). One-line fix: reuse the existing `shellQuote()` helper.
-2. **No other correctness bugs found.** No unsafe force-unwraps anywhere in the codebase (the two `!` occurrences are both guarded by an adjacent nil-check in the same expression). No retain-cycle smells — `[weak self]` is used consistently in the handful of long-lived closures that need it.
-3. **Security posture is clean.** The only network calls are to `api.github.com` (self-repo release-version check for the update notifier — never auto-downloads/executes anything, just surfaces a link), the project's own `launchmanager.dev/help`/`/templates` pages (opened in the user's default browser, never fetched in-app), and `localhost:<port>` (the app's own port-scanning feature). No telemetry, analytics, or crash reporting of any kind. No hardcoded secrets. CI (`.github/workflows/release.yml`) is a plain build → DMG → GitHub Release → Homebrew tap pipeline with no suspicious build-script phases.
-4. **Localization is in good shape.** Base/source language is `zh-Hans`; the string catalog (`Localizable.xcstrings`) has real, natural-reading English translations for effectively every UI string (a handful of untranslated keys are technical terms identical in both languages, e.g. `"XML"`, `"Homebrew"`, `"PID"`). Spot-checked the longest/most technical strings for machine-translation artifacts — none found.
-
-## Notes for building on this fork
-
-- `main` tracks `upstream` (`Sean10000/LaunchManager`) for pulling in future upstream fixes/releases; `main-emmett` is this fork's own default branch for local changes and PRs.
-- The `.github/workflows/release.yml` pipeline (DMG build, GitHub Release, Homebrew tap update) references `Sean10000/homebrew-tap` and assumes an `HOMEBREW_TAP_TOKEN` secret scoped to that repo — it won't do anything useful here until repointed at an equivalent of my own, or just disabled if I don't need a public release pipeline.
-- `DeveloperSettings.xcconfig` (gitignored, copy from the `.example`) is where to put a personal `DEVELOPMENT_TEAM` for proper code signing instead of the ad-hoc signing CI uses.
