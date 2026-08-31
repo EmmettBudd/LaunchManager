@@ -49,12 +49,29 @@ struct AgentListView: View {
     private var filteredItems: [LaunchItem] {
         var items = store.items
         items = applyScopeFilter(to: items)
-        guard !searchText.isEmpty else { return items }
-        return items.filter {
-            $0.label.localizedCaseInsensitiveContains(searchText) ||
-            $0.program.localizedCaseInsensitiveContains(searchText) ||
-            ($0.brewFormulaName?.localizedCaseInsensitiveContains(searchText) ?? false)
+        if !searchText.isEmpty {
+            items = items.filter {
+                $0.label.localizedCaseInsensitiveContains(searchText) ||
+                $0.program.localizedCaseInsensitiveContains(searchText) ||
+                ($0.brewFormulaName?.localizedCaseInsensitiveContains(searchText) ?? false)
+            }
         }
+        return items.sorted { lhs, rhs in
+            let lhsRank = statusRank(lhs)
+            let rhsRank = statusRank(rhs)
+            if lhsRank != rhsRank { return lhsRank < rhsRank }
+            return lhs.label.localizedCaseInsensitiveCompare(rhs.label) == .orderedAscending
+        }
+    }
+
+    /// Lower ranks sort first — running items surface at the top, then things
+    /// that likely need attention, then healthy-but-idle items, then unloaded.
+    private func statusRank(_ item: LaunchItem) -> Int {
+        if item.pid != nil { return 0 }
+        if item.isDisabledByOverride { return 1 }
+        if let code = item.lastExitCode, code != 0 { return 2 }
+        if item.isLoaded { return 3 }
+        return 4
     }
 
     private var filteredInvalidItems: [InvalidPlist] {
