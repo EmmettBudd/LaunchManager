@@ -61,6 +61,10 @@ struct ServiceRowView: View {
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                withAnimation(.easeInOut(duration: 0.15)) { isExpanded.toggle() }
+            }
 
             if isExpanded {
                 Divider()
