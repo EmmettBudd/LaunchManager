@@ -100,18 +100,6 @@ struct AgentRowView: View {
                     .truncationMode(.middle)
                 Spacer()
                 primaryActionButton
-                Button { showingEdit = true } label: {
-                    Image(systemName: "pencil")
-                }
-                .buttonStyle(.borderless)
-                .disabled(isRowLocked)
-                Button(role: .destructive) {
-                    showingDeleteConfirm = true
-                } label: {
-                    Image(systemName: "trash")
-                }
-                .buttonStyle(.borderless)
-                .disabled(isRowLocked)
                 Button {
                     withAnimation(.easeInOut(duration: 0.15)) { isExpanded.toggle() }
                 } label: {
@@ -165,6 +153,14 @@ struct AgentRowView: View {
                         Button("查看日志") { showingLog = true }
                             .buttonStyle(.bordered).controlSize(.small)
                             .disabled(isRowLocked)
+                        Button("编辑") { showingEdit = true }
+                            .buttonStyle(.bordered).controlSize(.small)
+                            .disabled(isRowLocked)
+                        Button("删除", role: .destructive) {
+                            showingDeleteConfirm = true
+                        }
+                        .buttonStyle(.bordered).controlSize(.small)
+                        .disabled(isRowLocked)
                     }
                     .padding(.top, 4)
                 }

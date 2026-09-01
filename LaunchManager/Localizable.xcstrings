@@ -2981,6 +2981,16 @@
         }
       }
     },
+    "编辑": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit"
+          }
+        }
+      }
+    },
     "编辑 Agent": {
       "localizations": {
         "en": {
