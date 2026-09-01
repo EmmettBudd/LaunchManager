@@ -3403,6 +3403,16 @@
           }
         }
       }
+    },
+    "设置…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings…"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
