@@ -628,7 +628,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Global · /Library"
+            "value": "All Users · /Library"
           }
         }
       }
@@ -638,7 +638,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Global Agents"
+            "value": "All Users' Agents"
           }
         }
       }
@@ -1717,7 +1717,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "New LaunchDaemon"
+            "value": "New LaunchDaemon (System)"
           }
         }
       }
@@ -1727,7 +1727,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "New Global Agent"
+            "value": "New LaunchAgent (All Users)"
           }
         }
       }
@@ -1737,7 +1737,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "New User Agent"
+            "value": "New LaunchAgent (This User Only)"
           }
         }
       }
@@ -2594,7 +2594,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "User Agents"
+            "value": "This User's Agents"
           }
         }
       }
@@ -2665,7 +2665,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "User · ~/Library"
+            "value": "This User Only · ~/Library"
           }
         }
       }
