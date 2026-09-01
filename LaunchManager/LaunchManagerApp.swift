@@ -4,6 +4,7 @@ import SwiftUI
 extension Notification.Name {
     static let showAbout = Notification.Name("showAbout")
     static let refreshCurrentModule = Notification.Name("refreshCurrentModule")
+    static let openModuleSettings = Notification.Name("openModuleSettings")
 }
 
 @main
@@ -25,6 +26,12 @@ struct LaunchManagerApp: App {
                     Label("刷新", systemImage: "arrow.clockwise")
                 }
                 .keyboardShortcut("r", modifiers: .command)
+            }
+            CommandGroup(replacing: .appSettings) {
+                Button("设置…") {
+                    NotificationCenter.default.post(name: .openModuleSettings, object: nil)
+                }
+                .keyboardShortcut(",", modifiers: .command)
             }
             CommandGroup(replacing: .appInfo) {
                 Button("关于 LaunchManager") {

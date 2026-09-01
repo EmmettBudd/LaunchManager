@@ -105,6 +105,9 @@ struct ContentView: View {
                 refreshModuleIfNeeded(selection)
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .openModuleSettings)) { _ in
+            showModuleSettings = true
+        }
         .sheet(isPresented: $showModuleSettings) {
             ModuleSettingsSheet(moduleSettings: moduleSettings)
         }
