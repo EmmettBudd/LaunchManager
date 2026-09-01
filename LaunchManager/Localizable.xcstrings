@@ -1195,6 +1195,16 @@
         }
       }
     },
+    "导入…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import…"
+          }
+        }
+      }
+    },
     "导入 Plist": {
       "localizations": {
         "en": {
