@@ -10,7 +10,7 @@ struct EditAgentSheet: View {
     @State private var editorMode: EditorMode
     @State private var label: String
     @State private var program: String
-    @State private var argumentsText: String
+    @State private var argumentRows: [ArgumentRow]
     @State private var workingDirectory: String
     @State private var triggerType: LaunchItem.TriggerType
     @State private var weekday: Int?
@@ -47,7 +47,7 @@ struct EditAgentSheet: View {
         _editorMode = State(initialValue: initialXml != nil ? .xml : .form)
         _label = State(initialValue: d?.label ?? i?.label ?? "")
         _program = State(initialValue: d?.program ?? i?.program ?? "")
-        _argumentsText = State(initialValue: d?.programArguments.joined(separator: "\n") ?? i?.programArguments.joined(separator: "\n") ?? "")
+        _argumentRows = State(initialValue: Self.argumentRows(from: d?.programArguments ?? i?.programArguments ?? []))
         _workingDirectory = State(initialValue: d?.workingDirectory ?? i?.workingDirectory ?? "")
         _triggerType = State(initialValue: d?.triggerType ?? i?.triggerType ?? .atLoad)
         _weekday = State(initialValue: i?.calendarInterval?.weekday)
@@ -134,9 +134,12 @@ struct EditAgentSheet: View {
             Section("基本信息") {
                 VStack(alignment: .leading, spacing: 14) {
                     VStack(alignment: .leading, spacing: 4) {
-                        HStack(spacing: 0) {
-                            Text("Label").font(.caption).foregroundStyle(.secondary)
-                            Text(" *").font(.caption).foregroundStyle(.red)
+                        HStack(spacing: 4) {
+                            HStack(spacing: 0) {
+                                Text("Label").font(.caption).foregroundStyle(.secondary)
+                                Text(" *").font(.caption).foregroundStyle(.red)
+                            }
+                            InfoButton(text: "可以是任意字符串，只需在你的 Launch Agent 中保持唯一——它是 launchd 用来标识任务的 ID，也会作为生成的 .plist 文件名。反向域名写法（如 com.example.mytask）只是常见的命名约定，用来避免撞名，并非强制要求。")
                         }
                         TextField("如 com.example.mytask", text: $label)
                             .textFieldStyle(.roundedBorder)
@@ -155,20 +158,38 @@ struct EditAgentSheet: View {
                     }
                     Divider()
                     VStack(alignment: .leading, spacing: 4) {
-                        TextEditor(text: $argumentsText)
-                            .font(.system(.body, design: .monospaced))
-                            .frame(height: 64)
-                            .background(Color(.textBackgroundColor))
-                            .clipShape(RoundedRectangle(cornerRadius: 6))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 6)
-                                    .stroke(Color(.separatorColor), lineWidth: 1)
-                            )
-                        Text("每行一个参数").font(.caption).foregroundStyle(.secondary)
+                        HStack(spacing: 4) {
+                            Text("参数 Arguments").font(.caption).foregroundStyle(.secondary)
+                            InfoButton(text: "启动程序时传递给它的命令行参数，每个参数一行，顺序会保留。留空表示不传递任何参数。")
+                        }
+                        if argumentRows.isEmpty {
+                            Text("无参数").font(.caption).foregroundStyle(.secondary)
+                        }
+                        ForEach($argumentRows) { $row in
+                            HStack(spacing: 8) {
+                                TextField("参数", text: $row.value)
+                                    .textFieldStyle(.roundedBorder)
+                                Button {
+                                    argumentRows.removeAll { $0.id == row.id }
+                                } label: {
+                                    Image(systemName: "minus.circle.fill")
+                                        .foregroundStyle(.secondary)
+                                }
+                                .buttonStyle(.borderless)
+                            }
+                        }
+                        Button {
+                            argumentRows.append(ArgumentRow())
+                        } label: {
+                            Label("添加参数", systemImage: "plus")
+                        }
                     }
                     Divider()
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("工作目录").font(.caption).foregroundStyle(.secondary)
+                        HStack(spacing: 4) {
+                            Text("工作目录").font(.caption).foregroundStyle(.secondary)
+                            InfoButton(text: "程序启动时所在的当前工作目录。当脚本或程序依赖相对路径时才需要设置（例如读取与自身同目录下的配置文件），大多数情况下留空即可，会使用系统默认目录。")
+                        }
                         TextField("WorkingDirectory（可选）", text: $workingDirectory)
                             .textFieldStyle(.roundedBorder)
                     }
@@ -219,7 +240,7 @@ struct EditAgentSheet: View {
                 Toggle("保持存活（崩溃后自动重启）", isOn: $keepAlive)
             }
 
-            Section("环境变量 EnvironmentVariables（可选）") {
+            Section {
                 if envVarRows.isEmpty {
                     Text("无环境变量").font(.caption).foregroundStyle(.secondary)
                 }
@@ -243,11 +264,27 @@ struct EditAgentSheet: View {
                 } label: {
                     Label("添加变量", systemImage: "plus")
                 }
+            } header: {
+                HStack(spacing: 4) {
+                    Text("环境变量 EnvironmentVariables（可选）")
+                    InfoButton(text: "只在该程序运行期间生效的环境变量，不影响系统或其他程序。常用于传递密钥、开关某个功能，或覆盖 PATH 等场景。")
+                }
             }
 
-            Section("日志路径（可选）") {
-                TextField("标准输出 StandardOutPath", text: $stdoutPath)
-                TextField("标准错误 StandardErrorPath", text: $stderrPath)
+            Section {
+                HStack {
+                    TextField("标准输出 StandardOutPath", text: $stdoutPath)
+                    Button("选择…") { pickLogFolder(for: .stdout) }
+                }
+                HStack {
+                    TextField("标准错误 StandardErrorPath", text: $stderrPath)
+                    Button("选择…") { pickLogFolder(for: .stderr) }
+                }
+            } header: {
+                HStack(spacing: 4) {
+                    Text("日志路径（可选）")
+                    InfoButton(text: "程序的标准输出/标准错误写入的日志文件路径。点击「选择…」挑选一个文件夹后，会自动在其中生成以 Label 命名的日志文件（<Label>.out.log / <Label>.err.log）。留空则不记录日志。")
+                }
             }
         }
         .formStyle(.grouped)
@@ -313,6 +350,31 @@ struct EditAgentSheet: View {
         }
     }
 
+    private enum LogStream {
+        case stdout
+        case stderr
+    }
+
+    private func pickLogFolder(for stream: LogStream) {
+        let panel = NSOpenPanel()
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.allowsMultipleSelection = false
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+
+        let slug = label.isEmpty ? "agent" : label
+        let filename: String
+        switch stream {
+        case .stdout: filename = "\(slug).out.log"
+        case .stderr: filename = "\(slug).err.log"
+        }
+        let path = url.appendingPathComponent(filename).path
+        switch stream {
+        case .stdout: stdoutPath = path
+        case .stderr: stderrPath = path
+        }
+    }
+
     private func loadXmlFromCurrentState() {
         if let existingItem {
             xmlText = (try? plistService.readXml(from: existingItem.plistURL)) ?? formGeneratedXml()
@@ -359,6 +421,14 @@ struct EditAgentSheet: View {
 
     private static func envRows(from variables: [String: String]) -> [EnvVarRow] {
         variables.keys.sorted().map { EnvVarRow(key: $0, value: variables[$0] ?? "") }
+    }
+
+    private static func argumentRows(from arguments: [String]) -> [ArgumentRow] {
+        arguments.map { ArgumentRow(value: $0) }
+    }
+
+    private var argumentsFromRows: [String] {
+        argumentRows.map(\.value).filter { !$0.isEmpty }
     }
 
     private var environmentVariablesFromRows: [String: String] {
@@ -432,7 +502,7 @@ struct EditAgentSheet: View {
     private func applyFormFields(from item: LaunchItem) {
         label = item.label
         program = item.program
-        argumentsText = item.programArguments.joined(separator: "\n")
+        argumentRows = Self.argumentRows(from: item.programArguments)
         workingDirectory = item.workingDirectory ?? ""
         triggerType = item.triggerType
         weekday = item.calendarInterval?.weekday
@@ -458,7 +528,7 @@ struct EditAgentSheet: View {
 
     private func formLaunchItem() -> LaunchItem {
         let scope = existingItem?.scope ?? defaultScope
-        let args = argumentsText.components(separatedBy: "\n").filter { !$0.isEmpty }
+        let args = argumentsFromRows
         let plistURL = existingItem?.plistURL ??
             scope.directoryURL.appendingPathComponent("\(label).plist")
 
@@ -528,6 +598,15 @@ private struct EnvVarRow: Identifiable {
 
     init(key: String = "", value: String = "") {
         self.key = key
+        self.value = value
+    }
+}
+
+private struct ArgumentRow: Identifiable {
+    let id = UUID()
+    var value: String
+
+    init(value: String = "") {
         self.value = value
     }
 }
