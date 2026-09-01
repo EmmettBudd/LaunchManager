@@ -121,8 +121,8 @@ struct AgentListView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .navigationTitle("Launch Agents")
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
+        .toolbar(id: "agentListToolbar") {
+            ToolbarItem(id: "newAgentMenu", placement: .primaryAction, showsByDefault: true) {
                 Menu {
                     ForEach(LaunchItem.Scope.allCases, id: \.self) { scope in
                         Button {
@@ -139,11 +139,16 @@ struct AgentListView: View {
                     } label: {
                         Label("从 XML 粘贴…", systemImage: "doc.on.clipboard")
                     }
+                    Button {
+                        pickAndImportPlist()
+                    } label: {
+                        Label("导入…", systemImage: "square.and.arrow.down")
+                    }
                 } label: {
                     Label("新建", systemImage: "plus")
                 }
             }
-            ToolbarItem {
+            ToolbarItem(id: "importPlist", placement: .primaryAction, showsByDefault: false) {
                 Button { pickAndImportPlist() } label: {
                     Label("导入", systemImage: "square.and.arrow.down")
                 }
